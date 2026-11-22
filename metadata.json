@@ -2,7 +2,7 @@
   "id": "biblioteca-gaming",
   "name": "Biblioteca gaming",
   "description": "Biblioteca gaming para la barra de Caelestia: Steam, Heroic, Lutris y apps .desktop, con portadas, favoritos y orden. Game library widget for the Caelestia bar: covers, favorites and sorting.",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "type": "quickshell",
   "ui": "main.qml",
   "author": {
