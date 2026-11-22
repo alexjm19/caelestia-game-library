@@ -1,1 +1,2 @@
 singleton BibliotecaBridge BibliotecaBridge.qml
+singleton BibliotecaIdioma BibliotecaIdioma.qml

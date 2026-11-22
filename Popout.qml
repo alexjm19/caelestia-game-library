@@ -2,6 +2,7 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import QtQuick.Layouts
+import QtQml
 import QtCore
 import Quickshell
 import Quickshell.Io
@@ -20,7 +21,7 @@ Item {
 
     Settings {
         id: cfg
-        category: "Plugin_biblioteca-steam"
+        category: "Plugin_biblioteca-gaming"
         property string ocultar: ""
         property int columnas: 5
         property int filas: 3
@@ -32,6 +33,14 @@ Item {
         // recientes | nombre | tienda
         property string orden: "recientes"
         property bool soloFavoritos: false
+        // Auto | Español | English
+        property string idioma: "Auto"
+    }
+
+    Binding {
+        target: BibliotecaIdioma
+        property: "preferencia"
+        value: cfg.idioma
     }
 
     readonly property bool opened: visible && BibliotecaBridge.popoutShown
@@ -51,7 +60,7 @@ Item {
     // Se lee de cfg.tienda (persistente); si esa tienda ya no tiene juegos se muestran todas,
     // sin borrar la preferencia guardada.
     readonly property string tienda: tiendas.indexOf(cfg.tienda) !== -1 ? cfg.tienda : ""
-    readonly property var nombresTienda: ({ "Steam": qsTr("Steam"), "Heroic": qsTr("Heroic"), "Lutris": qsTr("Lutris"), "App": qsTr("Otros") })
+    readonly property var nombresTienda: ({ "Steam": "Steam", "Heroic": "Heroic", "Lutris": "Lutris", "App": BibliotecaIdioma.t("Otros") })
     readonly property var iconosTienda: ({ "": "apps", "Steam": "videogame_asset", "Heroic": "shield", "Lutris": "wine_bar", "App": "extension" })
     readonly property var tiendas: ["Steam", "Heroic", "Lutris", "App"].filter(t => juegos.some(j => j.source === t))
     function cuantos(t: string): int { return t ? juegos.filter(j => j.source === t).length : juegos.length; }
@@ -103,7 +112,7 @@ Item {
     function lanzar(j: var): void {
         if (!j) return;
         Quickshell.execDetached(j.launch);
-        Toaster.toast(qsTr("Lanzando"), j.name, "sports_esports", Toast.Info);
+        Toaster.toast(BibliotecaIdioma.t("Lanzando"), j.name, "sports_esports", Toast.Info);
         if (cfg.cerrarAlLanzar) BibliotecaBridge.close();
     }
 
@@ -138,15 +147,15 @@ Item {
                 fontScale: 1.4
             }
             StyledText {
-                text: qsTr("Juegos")
+                text: BibliotecaIdioma.t("Juegos")
                 font: Tokens.font.title.medium
                 color: Colours.palette.m3onSurface
             }
             StyledText {
                 Layout.fillWidth: true
-                text: root.cargando ? qsTr("buscando…")
-                    : root.visibles.length === root.juegos.length ? qsTr("%1 instalados").arg(root.juegos.length)
-                    : qsTr("%1 de %2").arg(root.visibles.length).arg(root.juegos.length)
+                text: root.cargando ? BibliotecaIdioma.t("buscando…")
+                    : root.visibles.length === root.juegos.length ? BibliotecaIdioma.t("%1 instalados").replace("%1", root.juegos.length)
+                    : BibliotecaIdioma.t("%1 de %2").replace("%1", root.visibles.length).replace("%2", root.juegos.length)
                 font: Tokens.font.label.small
                 color: Colours.palette.m3onSurfaceVariant
             }
@@ -162,7 +171,7 @@ Item {
                 model: [""].concat(root.tiendas)
                 delegate: ToggleButton {
                     required property string modelData
-                    label: (modelData ? root.nombresTienda[modelData] : qsTr("Todas")) + " · " + root.cuantos(modelData)
+                    label: (modelData ? root.nombresTienda[modelData] : BibliotecaIdioma.t("Todas")) + " · " + root.cuantos(modelData)
                     icon: root.iconosTienda[modelData] ?? "apps"
                     toggled: root.tienda === modelData
                     onClicked: cfg.tienda = modelData
@@ -174,7 +183,7 @@ Item {
         StyledTextField {
             id: buscador
             Layout.fillWidth: true
-            placeholderText: qsTr("Buscar juego")
+            placeholderText: BibliotecaIdioma.t("Buscar juego")
             leadingIcon: "search"
             onTextChanged: root.filtro = text
             Keys.onPressed: event => {
@@ -195,32 +204,32 @@ Item {
             spacing: Tokens.spacing.small
 
             ToggleButton {
-                label: qsTr("Recientes")
+                label: BibliotecaIdioma.t("Recientes")
                 icon: "history"
-                tooltip: qsTr("Ordenar por fecha de la última sesión")
+                tooltip: BibliotecaIdioma.t("Ordenar por fecha de la última sesión")
                 toggled: root.orden === "recientes"
                 onClicked: cfg.orden = "recientes"
             }
             ToggleButton {
-                label: qsTr("Nombre")
+                label: BibliotecaIdioma.t("Nombre")
                 icon: "sort_by_alpha"
-                tooltip: qsTr("Ordenar por nombre")
+                tooltip: BibliotecaIdioma.t("Ordenar por nombre")
                 toggled: root.orden === "nombre"
                 onClicked: cfg.orden = "nombre"
             }
             ToggleButton {
-                label: qsTr("Tienda")
+                label: BibliotecaIdioma.t("Tienda")
                 icon: "storefront"
-                tooltip: qsTr("Agrupar por tienda")
+                tooltip: BibliotecaIdioma.t("Agrupar por tienda")
                 toggled: root.orden === "tienda"
                 onClicked: cfg.orden = "tienda"
             }
             Item { Layout.fillWidth: true }
             ToggleButton {
-                label: qsTr("Favoritos · %1").arg(root.totalFavoritos)
+                label: BibliotecaIdioma.t("Favoritos · %1").replace("%1", root.totalFavoritos)
                 icon: "favorite"
                 accent: "Error"
-                tooltip: qsTr("Mostrar solo los juegos marcados con el corazón")
+                tooltip: BibliotecaIdioma.t("Mostrar solo los juegos marcados con el corazón")
                 toggled: cfg.soloFavoritos
                 onClicked: cfg.soloFavoritos = !cfg.soloFavoritos
             }
@@ -230,8 +239,8 @@ Item {
             visible: !root.cargando && root.visibles.length === 0
             Layout.fillWidth: true
             text: root.juegos.length
-                ? (cfg.soloFavoritos && root.totalFavoritos === 0 ? qsTr("Aún no hay favoritos: pulsa el corazón de un juego") : qsTr("Ningún juego coincide"))
-                : qsTr("No se han encontrado juegos")
+                ? (cfg.soloFavoritos && root.totalFavoritos === 0 ? BibliotecaIdioma.t("Aún no hay favoritos: pulsa el corazón de un juego") : BibliotecaIdioma.t("Ningún juego coincide"))
+                : BibliotecaIdioma.t("No se han encontrado juegos")
             color: Colours.palette.m3onSurfaceVariant
             horizontalAlignment: Text.AlignHCenter
         }

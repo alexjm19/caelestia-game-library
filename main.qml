@@ -8,15 +8,15 @@ Item {
 
     function requestToggle(): void { BibliotecaBridge.toggle(); }
 
-    // caelestia shell bibliotecaSteam toggle
+    // caelestia shell bibliotecaGaming toggle
     IpcHandler {
-        target: "bibliotecaSteam"
+        target: "bibliotecaGaming"
         function open(): void { BibliotecaBridge.open(); }
         function close(): void { BibliotecaBridge.close(); }
         function toggle(): void { BibliotecaBridge.toggle(); }
     }
 
     Component.onCompleted: {
-        CaelestiaApi.shortcuts.register("bibliotecaSteam", "Abrir la biblioteca gaming", "Meta+J", root.requestToggle);
+        CaelestiaApi.shortcuts.register("bibliotecaGaming", "Abrir la biblioteca gaming / Open the game library", "Meta+J", root.requestToggle);
     }
 }

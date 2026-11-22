@@ -9,11 +9,12 @@ Works with **Steam**, **Heroic** (Epic, GOG and Amazon), **Lutris** and any `.de
 | **All launchers** | Steam libraries from `libraryfolders.vdf`, Heroic's `installed.json` files, Lutris' `pga.db`, and game `.desktop` entries. Skips Proton, runtimes, redistributables and launcher/tool entries. |
 | **Covers** | Reads Steam's local `librarycache`, Heroic's `images-cache`, Lutris' `coverart`, and the icon theme for desktop entries. Falls back to a gamepad icon. |
 | **Favorites** | Heart on every cover. Favorites are always shown first, whatever the sort order. Stored as game IDs in the shell settings. |
-| **Sort** | `Recientes` (last played), `Nombre` (A–Z) or `Tienda` (grouped by launcher). The last choice is remembered. |
-| **Filters** | Search by name, filter by store, or show only favorites. The header shows `N de M` when a filter is active. |
+| **Sort** | Recent (last played), Name (A–Z) or Store (grouped by launcher). The last choice is remembered. |
+| **Filters** | Search by name, filter by store, or show only favorites. The header shows `N of M` when a filter is active. |
+| **Languages** | Spanish and English UI. `Auto` follows the Caelestia shell language; it can also be forced from the plugin settings. |
 | **Keyboard** | `Meta+J` opens the panel. Arrows move the selection, `Enter` launches, `Esc` closes. |
 
-The UI is in Spanish.
+The UI is available in Spanish and English; `Auto` follows the Caelestia shell language.
 
 ## Requirements
 
@@ -25,18 +26,18 @@ The lister is read-only: it never launches a game, writes to a launcher's files,
 
 ## Install
 
-Clone the repository directly into the Caelestia plugin directory, using the folder name `biblioteca-steam`:
+Clone the repository directly into the Caelestia plugin directory, using the folder name `biblioteca-gaming`:
 
 ```bash
 git clone https://github.com/alexjm19/caelestia-game-library.git \
-  ~/.config/caelestia/plugins/biblioteca-steam
+  ~/.config/caelestia/plugins/biblioteca-gaming
 systemctl --user restart caelestia-shell
 ```
 
 Then add the widget to the bar:
 
-- **Nexus** (`Meta+U`) → **Bar** → add **Biblioteca gaming** (id `bibliotecaSteam`), or
-- add `"bibliotecaSteam"` to `bar.entries` in `~/.config/caelestia/shell.json` and restart the shell.
+- **Nexus** (`Meta+U`) → **Bar** → add **Biblioteca gaming** (id `bibliotecaGaming`), or
+- add `"bibliotecaGaming"` to `bar.entries` in `~/.config/caelestia/shell.json` and restart the shell.
 
 `Meta+J` is registered automatically by the plugin.
 
@@ -45,7 +46,7 @@ Then add the widget to the bar:
 - Click a cover to launch the game.
 - Click the **heart** on a cover to add or remove it from favorites. The heart click does not launch the game.
 - Use the chips under the search box to change the sort order or show only favorites.
-- The store chips (`Todas`, `Steam`, `Otros`…) filter by launcher.
+- The store chips (`Todas`/`All`, `Steam`, `Otros`/`Others`…) filter by launcher.
 
 ## Settings
 
@@ -57,17 +58,25 @@ The plugin's own settings appear in the Caelestia/Nexus plugin settings:
 | `columnas` | `5` | Columns (3–8). |
 | `filas` | `3` | Visible rows (1–6); the rest scroll. |
 | `cerrarAlLanzar` | `true` | Close the panel when a game is launched. |
+| `idioma` | `Auto` | `Auto` follows the shell language; `Español` or `English` force one. |
 
-The panel also persists its UI state in `~/.config/Caelestia/caelestia-shell.conf` under `[Plugin_biblioteca-steam]`:
+The panel also persists its UI state in `~/.config/Caelestia/caelestia-shell.conf` under `[Plugin_biblioteca-gaming]`:
 
 ```ini
 favoritos=steam:1091500,lutris:some-slug
+idioma=Auto
 orden=recientes
 soloFavoritos=false
 tienda=Steam
 ```
 
 `favoritos` is a comma-separated list of IDs (`steam:<appid>`, `heroic:<runner>:<app>`, `lutris:<slug>`, `app:<desktop-file>`). Editing the file by hand is safe; restart the shell or reopen the panel to pick up changes.
+
+## Translations
+
+`BibliotecaIdioma.qml` keeps the English strings next to the Spanish source text. `Auto` uses `Translations.activeLanguage` from Caelestia and falls back to `Qt.locale()`. To add another language, add a map to that singleton and expose it in the language selector.
+
+The plugin does not install a `caelestia_<lang>.qm` catalog on purpose: Caelestia's translation loader keeps a single translator, so a plugin catalog would shadow the shell's own catalog instead of merging with it.
 
 ## How it works
 

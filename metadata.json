@@ -1,7 +1,7 @@
 {
-  "id": "biblioteca-steam",
+  "id": "biblioteca-gaming",
   "name": "Biblioteca gaming",
-  "description": "Botón en la barra de Caelestia que despliega todos los juegos del PC (Steam, Heroic, Lutris y otros) con su portada; un clic los lanza. Corazón para marcar favoritos (siempre primero) y orden por última sesión, nombre o tienda.",
+  "description": "Biblioteca gaming para la barra de Caelestia: Steam, Heroic, Lutris y apps .desktop, con portadas, favoritos y orden. Game library widget for the Caelestia bar: covers, favorites and sorting.",
   "version": "1.1.0",
   "type": "quickshell",
   "ui": "main.qml",
@@ -11,7 +11,7 @@
   "license": "GPL-3.0-or-later",
   "barWidgets": [
     {
-      "id": "bibliotecaSteam",
+      "id": "bibliotecaGaming",
       "name": "Biblioteca gaming",
       "icon": "sports_esports",
       "defaultZone": "left",
@@ -22,14 +22,14 @@
   "settings": [
     {
       "id": "ocultar",
-      "label": "Ocultar juegos (nombres separados por comas)",
+      "label": "Ocultar juegos separados por comas / Hide games (comma-separated)",
       "type": "text",
       "default": "",
       "placeholder": "KMines, KMahjongg"
     },
     {
       "id": "columnas",
-      "label": "Columnas",
+      "label": "Columnas / Columns",
       "type": "number",
       "default": 5,
       "min": 3,
@@ -38,7 +38,7 @@
     },
     {
       "id": "filas",
-      "label": "Filas visibles (el resto, con desplazamiento)",
+      "label": "Filas visibles, el resto con desplazamiento / Visible rows (the rest scroll)",
       "type": "number",
       "default": 3,
       "min": 1,
@@ -47,9 +47,20 @@
     },
     {
       "id": "cerrarAlLanzar",
-      "label": "Cerrar el panel al lanzar",
+      "label": "Cerrar el panel al lanzar / Close panel on launch",
       "type": "toggle",
       "default": true
+    },
+    {
+      "id": "idioma",
+      "label": "Idioma / Language",
+      "type": "enum",
+      "default": "Auto",
+      "options": [
+        "Auto",
+        "Español",
+        "English"
+      ]
     }
   ]
 }

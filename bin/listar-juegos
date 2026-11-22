@@ -1,5 +1,5 @@
 #!/usr/bin/python3 -I
-"""Lista TODOS los juegos del PC en JSON para el plugin biblioteca-steam de caelestia.
+"""Lista TODOS los juegos del PC en JSON para el plugin biblioteca-gaming de caelestia.
 Solo lee archivos; no lanza nada.
 
 Fuentes:

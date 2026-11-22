@@ -11,7 +11,7 @@ Item {
     property var screen
     property var popouts
 
-    readonly property string widgetId: "bibliotecaSteam"
+    readonly property string widgetId: "bibliotecaGaming"
     property string _key: ""
     readonly property bool active: popouts ? (popouts.currentName === widgetId && popouts.hasCurrent === true) : false
 
