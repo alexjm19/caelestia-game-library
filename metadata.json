@@ -1,0 +1,55 @@
+{
+  "id": "biblioteca-steam",
+  "name": "Biblioteca gaming",
+  "description": "Botón en la barra de Caelestia que despliega todos los juegos del PC (Steam, Heroic, Lutris y otros) con su portada; un clic los lanza. Corazón para marcar favoritos (siempre primero) y orden por última sesión, nombre o tienda.",
+  "version": "1.1.0",
+  "type": "quickshell",
+  "ui": "main.qml",
+  "author": {
+    "name": "alexjm19"
+  },
+  "license": "GPL-3.0-or-later",
+  "barWidgets": [
+    {
+      "id": "bibliotecaSteam",
+      "name": "Biblioteca gaming",
+      "icon": "sports_esports",
+      "defaultZone": "left",
+      "component": "BarWidget.qml",
+      "popout": "Popout.qml"
+    }
+  ],
+  "settings": [
+    {
+      "id": "ocultar",
+      "label": "Ocultar juegos (nombres separados por comas)",
+      "type": "text",
+      "default": "",
+      "placeholder": "KMines, KMahjongg"
+    },
+    {
+      "id": "columnas",
+      "label": "Columnas",
+      "type": "number",
+      "default": 5,
+      "min": 3,
+      "max": 8,
+      "step": 1
+    },
+    {
+      "id": "filas",
+      "label": "Filas visibles (el resto, con desplazamiento)",
+      "type": "number",
+      "default": 3,
+      "min": 1,
+      "max": 6,
+      "step": 1
+    },
+    {
+      "id": "cerrarAlLanzar",
+      "label": "Cerrar el panel al lanzar",
+      "type": "toggle",
+      "default": true
+    }
+  ]
+}
